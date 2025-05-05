@@ -3,7 +3,6 @@ async function text(url) {
     const response = await fetch(url)
     if (!response.ok) throw new Error(`couldn't load ${url} ${response.status}`)
     let t = await response.text()
-    console.log(t)
     return t
 }
     
