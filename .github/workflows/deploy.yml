@@ -11,6 +11,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./makeovers
     permissions:
       contents: read
       pages: write
@@ -25,9 +29,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-        working-directory: ./makeovers
       - run: npm run build
-        working-directory: ./makeovers
       - uses: actions/configure-pages@v4
       - uses: actions/upload-pages-artifact@v3
         with:
