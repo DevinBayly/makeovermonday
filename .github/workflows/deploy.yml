@@ -1,5 +1,9 @@
 name: Deploy
 
+defaults:
+  run:  
+    working-directory: ./makeovers
+
 on:
   # Run this workflow whenever a new commit is pushed to main.
   push: {branches: [main]}
@@ -11,10 +15,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash
-        working-directory: ./makeovers
     permissions:
       contents: read
       pages: write
