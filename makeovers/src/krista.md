@@ -23,6 +23,21 @@ const input = view(Inputs.textarea())
 ${`${d3.schemeCategory10}`.split(",").join(", ")}
 ### modified scheme values to correspond to agency groups subj_group
 
+${
+    Plot.plot({
+        y:{axis:null},
+        height:120,
+        width:350,
+        color:{domain:flatGroups,range:flatColorGroups},
+    x:{domain:flatGroups,label:null,tickRotate:-45},
+    marginBottom:100,
+        marks:[
+            Plot.barY(plotdata,{
+               x:"name",y:"val",fill:"name"
+            })
+        ]
+    })
+}
 
 
 ```js
@@ -55,85 +70,20 @@ let flatGroups = groups.flat()
 console.log(flatGroups)
 let flatColorGroups = colorGroups.flat()
 let together = Array(flatGroups.length).fill(0).map((e,i)=> [flatGroups[i],flatColorGroups[i]])
-
+let plotdata = flatGroups.map(e=>({name:e,val:2}))
 ```
-${JSON.stringify(together.join())}
+the hex codes you'd use are
+
+<pre>
+<code>${flatColorGroups.join(", ")}</code>
+</pre>
 
 
-${Inputs.table(f)}
-```js
-let f = FileAttachment("./data/agency_subject_data.csv").csv({typed:true})
-let data = f
-let df = aq.from(data)
+and the list to use for your subj group axes is
 
-//${df.getter("subj_group").distinct()}
-```
 
-```js
-
-let sub_domain = data.reduce((acc,cur) => {
-    let sub = cur.subj_group
-    if (acc.indexOf(sub) >=0) {
-        return acc
-    } else {
-        acc.push(sub)
-        return acc
-    }
-},[])
-```
-Columns
-### ${data.columns.join(", ")}
-${
-    Plot.plot({
-        marginBottom:150,
-        marginLeft:100,
-        color:{domain:flatGroups,range:flatColorGroups,legend:true},
-        x:{
-            tickRotate:-45,
-            label:null,
-            domain:flatGroups,
-            axis:null},
-        marks:[
-            Plot.barY(data,{y:"n",x:"subj_group",fx:"tek_term_type",fill:"subj_group"})
-        ]
-    })
-}
-But something to consider here is that we are using color as the identity channel for the subj group when we might be able to identify the bars in other ways? Like using the name under the bar?
-${
-    Plot.plot({
-        marginBottom:150,
-        marginLeft:100,
-        color:{domain:flatGroups,range:flatColorGroups,legend:true},
-        x:{
-            tickRotate:-45,
-            label:null,
-            domain:flatGroups,
-            },
-        marks:[
-            Plot.barY(data,{y:"n",x:"subj_group",fx:"tek_term_type",fill:"subj_group"})
-        ]
-    })
-}
-But this is usually recommended that we not rotate the text in a visualization
-
-Something to consider, use the text on y, so it's not written at an angle
-${
-    Plot.plot({
-        marginLeft:150,
-        marks:[
-            Plot.barX(data,{y:"subj_group",x:"n",fx:"tek_term_type"})
-        ]
-    })
-}
-But you might say, how can I still provide the general idea of "groupings" like before. I might suggest trying horizontal demarkation lines?
-
-${Plot.plot({
-        marginLeft:150,
-        y:{domain:flatGroups},
-        marks:[
-            Plot.ruleY(groups.map(e=>e[e.length-1]).slice(0,-1),{dy:10.25,stroke:"gray",strokeOpacity:0.2}),
-            Plot.barX(data,{y:"subj_group",x:"n",fx:"tek_term_type"}),
-        ]
-})}
-
-And then we can use axis order and horizontal lines to mark our grouping instead of using colors?
+<pre>
+<code>
+${flatGroups.join(", ")} 
+</code>
+</pre>
