@@ -9,17 +9,19 @@ Enter your groups where each one is on a separate line with the elemens of the s
 Climate, Fire
 Sites
 Fish & Wildlife, Plants 
-Biophysical Characteristics, Soil Quality
+Biophysical Characteristics
+Soil Quality,
 Economics, Navigation
 Environmental Justice
-Human Health, Air Quality
-Way of Life
+Human Health,
+Air Quality, new cat #1
+Way of Life,  new cat #2
 ```
 ```js
 const input = view(Inputs.textarea())
 ```
 
-### Scheme 10 cat base hex values
+### Scheme 10 cat base hex values + 2 random color
 ${`${d3.schemeCategory10}`.split(",").join(", ")}
 ### modified scheme values to correspond to agency groups subj_group
 
@@ -46,6 +48,10 @@ let groups = groupingBase.trim().split("\n").map(e=> e.split(", ").map(ee=>ee.tr
 
 // now we will choose a base scheme 10 color for each, and then depending on the number of sub groups we will pick out a number of lightness steps to apply
 let hexes= d3.schemeCategory10
+console.log("hexes",hexes)
+// add two more colors 
+hexes.push("#ffaa0e")
+hexes.push("#b07aa2")
 let col = d3.hsl(hexes[0])
 console.log(col)
 let colors =[]
