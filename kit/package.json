@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@fontsource/spline-sans-mono": "^5.2.8",
+    "@observablehq/notebook-kit": "^1.5.1"
+  },
+  "scripts": {
+    "docs:preview": "notebooks preview --root docs",
+    "docs:build": "notebooks build --root docs -- docs/*.html"
+  }
+}

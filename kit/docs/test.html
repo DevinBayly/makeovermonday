@@ -1,0 +1,44 @@
+<!doctype html>
+<notebook>
+  <title>Hello, world!</title>
+  <script type="text/markdown">
+    ## Title for page of charts
+    TESTING out the markdown options for the page
+  </script>
+  <script>
+    const data = await FileAttachment("data/maeve.json").json()
+  </script>
+  <script>
+    const container = html`<div id="container"></div>`
+    const indicatorGroups = data.reduce((acc, cur) => {
+      if (acc[cur.indicator] == undefined) {
+        acc[cur.indicator] = []
+      }
+      acc[cur.indicator].push(cur)
+      return acc
+    }, {})
+    for (let group in indicatorGroups) {
+      let groupData = indicatorGroups[group]
+      if (group == "undefined") continue
+      display(
+        Plot.plot({
+          x:{domain:[0,200],
+            label:"Socio Economic measure (X)"
+          },
+          
+          marginLeft: 150,
+          marks: [Plot.dot(groupData, { x: d=> Math.random()*100, y: "distance" }),
+            Plot.axisY({anchor:"left",labelAnchor:"center"}),
+            Plot.axisY({anchor:"left",labelAnchor:"top",label:group})
+
+          ]
+        })
+      )
+    }
+    // organize the data by 
+    //     display()
+  </script>
+  <script>
+    Inputs.table(data)
+  </script>
+</notebook>
