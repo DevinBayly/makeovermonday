@@ -1,0 +1,68 @@
+<!doctype html>
+<notebook>
+  <title>Hello, world!</title>
+  <script>
+    
+        const startingData = await FileAttachment("data/chris_dist_data.json").json()
+    const names = ["Entry","Mid-career","Senior","Executive"]
+    const shifts = [1,3,4,5]
+
+    display(startingData)
+        const groupNames = startingData.map(e=>e.responses).reduce((acc,cur,i) => {
+            acc = [...acc,cur.map(e=> ({
+                value:e + shifts[i],
+                group:names[i]
+
+            })
+        )]
+            return acc
+        },[]).flat()
+        display(groupNames)
+        const bplotData = startingData.map(e=>e.bplot_data).reduce((acc,cur,i) => {
+            acc = [...acc,cur.map((e,ii)=> ({
+                value:e + shifts[i],
+                group:names[i],
+                middle:ii ==2,
+
+            })
+        )]
+            return acc
+        },[]).flat()
+        display(bplotData)
+  </script>
+  <script>
+    
+    Plot.plot({
+        height:300,
+        marginLeft:75,
+        y:{
+            labelAnchor:"top",
+            padding:.6,
+            align:.6,
+            label:"Position Level"
+        },
+        x:{
+            axis:null,
+
+        },
+        marks:[
+            Plot.axisX({
+                ticks:[0,2,4,6],
+                tickFormat:(d,i) => {
+                    return `dirt ramen-dinner Trader-Joes Whole-foods`.split(" ")[i]
+                },
+                label:"Grocery Budget"
+            }),
+            Plot.tickX(groupNames,{x:"value",y:"group",opacity:.4, sort:{y:"x"}}),
+            Plot.dot(bplotData,{x:"value",y:"group",r:d=>d.middle? 5:1,stroke:"red",opacity:.5,dy:-20}),
+            Plot.line(bplotData,{x:"value",y:"group",z:"group",strokeDasharray:"2,4",dy:-20,opacity:.5}),
+            Plot.text(bplotData,{x:"value",y:"group",text:d=> d.middle?"":d.value,
+                dy:-30
+            }),
+            Plot.text(bplotData,{x:"value",y:"group",text:d=> d.middle?d.value:"",
+                dy:-35
+            })
+        ]
+    })
+  </script>
+</notebook>
